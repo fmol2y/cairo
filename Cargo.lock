@@ -829,7 +829,9 @@ dependencies = [
 name = "cairo-lang-sierra-gas"
 version = "2.1.0"
 dependencies = [
+ "cairo-lang-compiler",
  "cairo-lang-eq-solver",
+ "cairo-lang-semantic",
  "cairo-lang-sierra",
  "cairo-lang-sierra-type-size",
  "cairo-lang-test-utils",
