@@ -1632,17 +1632,12 @@ use starknet::event::EventEmitter;
         }
     }
 
-    use same_name::InternalContractStateTrait as same_nameContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod same_name {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> felt252;
-            fn write(ref self: ContractMemberState, value: felt252);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, felt252> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x26673b81123c540a9238f376b833c3914834c3c0cdf4e609f834963616d3ef9>()
             }
@@ -1720,6 +1715,16 @@ error: Plugin diagnostic: The name `same_name` is defined multiple times.
  --> lib.cairo:5:9
         same_name: felt252,
         ^*******^
+
+error: Method `address` not found on type "@test::test_contract::same_name::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:53:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::same_name::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:63:30
+                        self.address(),
+                             ^*****^
 
 //! > ==========================================================================
 

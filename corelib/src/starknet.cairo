@@ -60,6 +60,12 @@ use event::Event;
 mod account;
 use account::AccountContract;
 
+trait InternalContractStateTrait<TContractMemberState, TValue> {
+    fn address(self: @TContractMemberState) -> starknet::StorageBaseAddress;
+    fn read(self: @TContractMemberState) -> TValue;
+    fn write(ref self: TContractMemberState, value: TValue);
+}
+
 extern type System;
 
 // An Helper function to force the inclusion of `System` in the list of implicits.

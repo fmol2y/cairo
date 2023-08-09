@@ -82,17 +82,12 @@ use starknet::event::EventEmitter;
         }
     }
 
-    use balance::InternalContractStateTrait as balanceContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod balance {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> felt252;
-            fn write(ref self: ContractMemberState, value: felt252);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, felt252> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x206f38f7e4f15e87567361213c28f235cccdaa1d7fd34c9db1dfe9489c6a091>()
             }
@@ -202,3 +197,12 @@ impl EventIsEvent of starknet::Event<Event> {
 }
 
 //! > expected_diagnostics
+error: Method `address` not found on type "@test::hello_starknet::balance::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:53:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::hello_starknet::balance::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:63:30
+                        self.address(),
+                             ^*****^

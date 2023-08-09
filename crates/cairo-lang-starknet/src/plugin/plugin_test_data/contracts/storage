@@ -100,17 +100,12 @@ use starknet::event::EventEmitter;
         }
     }
 
-    use var_felt252::InternalContractStateTrait as var_felt252ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_felt252 {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> felt252;
-            fn write(ref self: ContractMemberState, value: felt252);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, felt252> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0xaa97ff6377ea4c71d88150f635730828734fd5bfd6f834e2ae92d29676846c>()
             }
@@ -137,17 +132,12 @@ use starknet::event::EventEmitter;
             }
         }
     }
-    use var_u8::InternalContractStateTrait as var_u8ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_u8 {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> u8;
-            fn write(ref self: ContractMemberState, value: u8);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, u8> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x2c1cc4c68869a16c4afd31a765927ce369b8ef4b1208114ea00e820ea36fc23>()
             }
@@ -174,17 +164,12 @@ use starknet::event::EventEmitter;
             }
         }
     }
-    use var_u16::InternalContractStateTrait as var_u16ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_u16 {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> u16;
-            fn write(ref self: ContractMemberState, value: u16);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, u16> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0xf3b2ea0485e7fdfaec3d3e519eeedf3d5dc3434b4f9c8858c217ca6a8b1d45>()
             }
@@ -211,17 +196,12 @@ use starknet::event::EventEmitter;
             }
         }
     }
-    use var_u32::InternalContractStateTrait as var_u32ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_u32 {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> u32;
-            fn write(ref self: ContractMemberState, value: u32);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, u32> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x19490a04fdf74ff92d2d73deff1f53be2aa23274d5a6896a509931d308ffa2d>()
             }
@@ -248,17 +228,12 @@ use starknet::event::EventEmitter;
             }
         }
     }
-    use var_u64::InternalContractStateTrait as var_u64ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_u64 {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> u64;
-            fn write(ref self: ContractMemberState, value: u64);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, u64> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x2b58a04fca59322572a3335b3f8e9a63dd34db1b715eaaae3ab367afa90a194>()
             }
@@ -285,17 +260,12 @@ use starknet::event::EventEmitter;
             }
         }
     }
-    use var_u128::InternalContractStateTrait as var_u128ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_u128 {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> u128;
-            fn write(ref self: ContractMemberState, value: u128);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, u128> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x1ba472df0f88c033d4e0c12eb95fd291de570db0f2df241297c6ebf905889a>()
             }
@@ -322,17 +292,12 @@ use starknet::event::EventEmitter;
             }
         }
     }
-    use var_bool::InternalContractStateTrait as var_boolContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var_bool {
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> bool;
-            fn write(ref self: ContractMemberState, value: bool);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, bool> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x379caae8ce359ad2da9b1cd83d4df406d959c199192b9c9e787595a50e0db27>()
             }
@@ -520,3 +485,102 @@ impl EventIsEvent of starknet::Event<Event> {
 }
 
 //! > expected_diagnostics
+error: The name `InternalContractStateTrait` is defined multiple times.
+ --> contract:88:23
+        use starknet::InternalContractStateTrait;
+                      ^************************^
+
+error: The name `InternalContractStateTrait` is defined multiple times.
+ --> contract:120:23
+        use starknet::InternalContractStateTrait;
+                      ^************************^
+
+error: The name `InternalContractStateTrait` is defined multiple times.
+ --> contract:152:23
+        use starknet::InternalContractStateTrait;
+                      ^************************^
+
+error: The name `InternalContractStateTrait` is defined multiple times.
+ --> contract:184:23
+        use starknet::InternalContractStateTrait;
+                      ^************************^
+
+error: The name `InternalContractStateTrait` is defined multiple times.
+ --> contract:216:23
+        use starknet::InternalContractStateTrait;
+                      ^************************^
+
+error: The name `InternalContractStateTrait` is defined multiple times.
+ --> contract:248:23
+        use starknet::InternalContractStateTrait;
+                      ^************************^
+
+error: Method `address` not found on type "@test::test_contract::var_felt252::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:71:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_felt252::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:81:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "@test::test_contract::var_u8::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:103:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_u8::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:113:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "@test::test_contract::var_u16::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:135:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_u16::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:145:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "@test::test_contract::var_u32::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:167:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_u32::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:177:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "@test::test_contract::var_u64::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:199:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_u64::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:209:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "@test::test_contract::var_u128::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:231:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_u128::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:241:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "@test::test_contract::var_bool::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:263:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var_bool::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:273:30
+                        self.address(),
+                             ^*****^

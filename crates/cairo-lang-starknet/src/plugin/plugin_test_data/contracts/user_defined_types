@@ -138,7 +138,7 @@ use starknet::event::EventEmitter;
         }
     }
 
-    use var::InternalContractStateTrait as varContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod var {
         use super::HashStateExTrait;
         use super::WrappedFelt252;
@@ -148,13 +148,8 @@ use starknet::event::EventEmitter;
         use super::BadEnumWithDefault;
         #[derive(Copy, Drop)]
         struct ContractMemberState {}
-        trait InternalContractStateTrait {
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> WrappedFelt252;
-            fn write(ref self: ContractMemberState, value: WrappedFelt252);
-        }
 
-        impl InternalContractStateImpl of InternalContractStateTrait {
+        impl InternalContractStateImpl of starknet::InternalContractStateTrait<ContractMemberState, WrappedFelt252> {
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {
                 starknet::storage_base_address_const::<0x1c1c14d56e959d57ab94facd0d6c86740ac46c453bf9107bba1c735d7783c71>()
             }
@@ -584,3 +579,13 @@ error: Plugin diagnostic: Multiple variants annotated with `#[default]`
  --> lib.cairo:41:9
         #[default]
         ^********^
+
+error: Method `address` not found on type "@test::test_contract::var::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:61:30
+                        self.address(),
+                             ^*****^
+
+error: Method `address` not found on type "test::test_contract::var::ContractMemberState". Did you import the correct trait and impl?
+ --> contract:71:30
+                        self.address(),
+                             ^*****^

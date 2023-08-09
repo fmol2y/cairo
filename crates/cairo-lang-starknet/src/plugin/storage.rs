@@ -174,17 +174,13 @@ fn try_extract_mapping_types(
 fn handle_simple_storage_var(address: &str) -> String {
     format!(
         "
-    use $storage_var_name$::InternalContractStateTrait as $storage_var_name$ContractStateTrait;
+        use starknet::InternalContractStateTrait;
     mod $storage_var_name$ {{$extra_uses$
         #[derive(Copy, Drop)]
         struct ContractMemberState {{}}
-        trait InternalContractStateTrait {{
-            fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress;
-            fn read(self: @ContractMemberState) -> $type_name$;
-            fn write(ref self: ContractMemberState, value: $type_name$);
-        }}
 
-        impl InternalContractStateImpl of InternalContractStateTrait {{
+        impl InternalContractStateImpl of \
+         starknet::InternalContractStateTrait<ContractMemberState, $type_name$> {{
             fn address(self: @ContractMemberState) -> starknet::StorageBaseAddress {{
                 starknet::storage_base_address_const::<{address}>()
             }}
