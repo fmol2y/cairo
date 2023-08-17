@@ -75,6 +75,7 @@ cairo_lang_test_utils::test_file_test_with_runner!(
     "src/plugin/plugin_test_data/components",
     {
         component: "component",
+        diagnostics: "diagnostics",
         no_body: "no_body",
         no_storage: "no_storage",
     },

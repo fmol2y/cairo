@@ -19,6 +19,20 @@ mod component {
     }
     #[derive(Drop, starknet::Event)]
     struct Log {}
+
+    #[includable_as(MyImpl)]
+    impl MyInnerImpl<TContractState, impl X: HasComponent<TContractState>> of MyTrait<ComponentState<TContractState>> {
+        fn get_data(self: @ComponentState<TContractState>, addr: ContractAddress) -> u32 {
+            self.data
+        }
+        fn set_data(ref self: ComponentState<TContractState>, addr: ContractAddress, value: u32) {
+            self.data = value;
+        }
+    }
+}
+trait MyTrait<T> {
+    fn get_data(self: @T, addr: ContractAddress) -> u32;
+    fn set_data(ref self: T, addr: ContractAddress, value: u32);
 }
 
 //! > generated_cairo_code
@@ -39,6 +53,20 @@ mod component {
     }
     #[derive(Drop, starknet::Event)]
     struct Log {}
+
+    #[includable_as(MyImpl)]
+    impl MyInnerImpl<TContractState, impl X: HasComponent<TContractState>> of MyTrait<ComponentState<TContractState>> {
+        fn get_data(self: @ComponentState<TContractState>, addr: ContractAddress) -> u32 {
+            self.data
+        }
+        fn set_data(ref self: ComponentState<TContractState>, addr: ContractAddress, value: u32) {
+            self.data = value;
+        }
+    }
+}
+trait MyTrait<T> {
+    fn get_data(self: @T, addr: ContractAddress) -> u32;
+    fn set_data(ref self: T, addr: ContractAddress, value: u32);
 }
 
 component:
@@ -82,6 +110,7 @@ use starknet::event::EventEmitter;
     mod data {
         use super::Event;
         use super::Log;
+        use super::MyInnerImpl;
         #[derive(Copy, Drop)]
         struct ComponentMemberState {}
         trait InternalComponentMemberStateTrait {
@@ -121,6 +150,7 @@ use starknet::event::EventEmitter;
     mod map {
         use super::Event;
         use super::Log;
+        use super::MyInnerImpl;
         #[derive(Copy, Drop)]
         struct ComponentMemberState {}
         trait InternalComponentMemberStateTrait {
@@ -157,7 +187,21 @@ use starknet::event::EventEmitter;
             }
         }
     }
+trait MyInnerImplTrait<TContractState> {
+    fn get_data(self: @TContractState, addr: ContractAddress) -> u32;
+    fn set_data(ref self: TContractState, addr: ContractAddress, value: u32);
+}
 
+impl MyImpl<TContractState, impl X: HasComponent<TContractState>, impl TContractStatePanicDestruct: PanicDestruct<TContractState>> of MyInnerImplTrait<TContractState> {
+    fn get_data(self: @TContractState, addr: ContractAddress) -> u32 {
+        let component = self.get_component();
+        component.get_data(addr, )
+    }
+    fn set_data(ref self: TContractState, addr: ContractAddress, value: u32) {
+        let mut component = self.get_component_mut();
+        component.set_data(addr, value, )
+    }
+}
 
 
 impls:
@@ -222,3 +266,109 @@ impl LogIsEvent of starknet::Event<Log> {
 }
 
 //! > expected_diagnostics
+error: Type not found.
+ --> lib.cairo:28:33
+    fn get_data(self: @T, addr: ContractAddress) -> u32;
+                                ^*************^
+
+error: Type not found.
+ --> lib.cairo:29:36
+    fn set_data(ref self: T, addr: ContractAddress, value: u32);
+                                   ^*************^
+
+error: Trait not found.
+ --> lib.cairo:18:79
+    impl MyInnerImpl<TContractState, impl X: HasComponent<TContractState>> of MyTrait<ComponentState<TContractState>> {
+                                                                              ^*****^
+
+error: Not a trait.
+ --> lib.cairo:18:79
+    impl MyInnerImpl<TContractState, impl X: HasComponent<TContractState>> of MyTrait<ComponentState<TContractState>> {
+                                                                              ^*************************************^
+
+error: Trait not found.
+ --> lib.cairo:18:46
+    impl MyInnerImpl<TContractState, impl X: HasComponent<TContractState>> of MyTrait<ComponentState<TContractState>> {
+                                             ^**********^
+
+error: Trait has no implementation in context: core::traits::Into::<S, test::component::Event>
+ --> component:5:46
+            let event: Event = traits::Into::into(event);
+                                             ^**^
+
+error: Invalid drop trait implementation, Trait has no implementation in context: core::traits::Drop::<test::component::data::ComponentMemberState>.
+ --> component:22:5
+    impl ComponentStateDrop<TCS> of Drop<ComponentState<TCS>> {}
+    ^**********************************************************^
+
+error: Plugin diagnostic: Type not found.
+ --> lib.cairo:19:66
+        fn get_data(self: @ComponentState<TContractState>, addr: ContractAddress) -> u32 {
+                                                                 ^*************^
+
+error: Plugin diagnostic: Type not found.
+ --> lib.cairo:22:69
+        fn set_data(ref self: ComponentState<TContractState>, addr: ContractAddress, value: u32) {
+                                                                    ^*************^
+
+error: Plugin diagnostic: Trait not found.
+ --> lib.cairo:18:46
+    impl MyInnerImpl<TContractState, impl X: HasComponent<TContractState>> of MyTrait<ComponentState<TContractState>> {
+                                             ^**********^
+
+error: Plugin diagnostic: Type not found.
+ --> lib.cairo:19:66
+        fn get_data(self: @ComponentState<TContractState>, addr: ContractAddress) -> u32 {
+                                                                 ^*************^
+
+error: Plugin diagnostic: Type not found.
+ --> lib.cairo:22:69
+        fn set_data(ref self: ComponentState<TContractState>, addr: ContractAddress, value: u32) {
+                                                                    ^*************^
+
+error: Invalid drop trait implementation, Trait has no implementation in context: core::traits::Drop::<test::component::Log>.
+ --> impls:1:1
+impl EventDrop of Drop::<Event>;
+^******************************^
+
+error: Trait has no implementation in context: core::array::ArrayTrait::<core::felt252>
+ --> event_impl:7:36
+                array::ArrayTrait::append(ref keys, 0x100572688f36e5f96cee69badc6dcd8712fa19d323be018601b92e967c60678);
+                                   ^****^
+
+error: Trait has no implementation in context: core::array::SpanTrait::<core::felt252>
+ --> event_impl:17:43
+        let selector = *array::SpanTrait::pop_front(ref keys)?;
+                                          ^*******^
+
+error: Mismatched types. The type core::integer::u32 cannot be created from a numeric literal.
+ --> component:55:38
+                let address_domain = 0_u32;
+                                     ^***^
+
+error: Mismatched types. The type core::integer::u32 cannot be created from a numeric literal.
+ --> component:65:38
+                let address_domain = 0_u32;
+                                     ^***^
+
+error: Variable not dropped.
+ --> component:50:24
+            fn address(self: @ComponentMemberState) -> starknet::StorageBaseAddress {
+                       ^**^
+note: Trait has no implementation in context: core::traits::Drop::<@test::component::data::ComponentMemberState>
+note: Trait has no implementation in context: core::traits::Destruct::<@test::component::data::ComponentMemberState>
+
+error: Trait has no implementation in context: core::hash::LegacyHash::<core::integer::u32>
+ --> component:92:46
+                    hash::LegacyHash::<u32>::hash(0x1af9e30ee4fed507d9432e0f1308eb5bd12221bef97071a48d86951102231be, key))
+                                             ^**^
+
+error: Mismatched types. The type core::integer::u32 cannot be created from a numeric literal.
+ --> component:96:38
+                let address_domain = 0_u32;
+                                     ^***^
+
+error: Mismatched types. The type core::integer::u32 cannot be created from a numeric literal.
+ --> component:106:38
+                let address_domain = 0_u32;
+                                     ^***^
