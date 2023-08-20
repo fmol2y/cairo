@@ -829,7 +829,8 @@ impl<'a> SpecificCostContextTrait<i32> for PostcostContext<'a> {
         wallet_value: &i32,
         future_wallet_value: i32,
     ) -> OrderedHashMap<CostTokenType, i64> {
-        let BranchCost::WithdrawGas { const_cost, success: true, with_builtin_costs } = branch_cost else {
+        let BranchCost::WithdrawGas { const_cost, success: true, with_builtin_costs } = branch_cost
+        else {
             panic!("Unexpected BranchCost: {:?}.", branch_cost);
         };
 

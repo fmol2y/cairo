@@ -24,4 +24,4 @@ indoc.workspace = true
 pretty_assertions.workspace = true
 test-case.workspace = true
 test-log.workspace = true
-cairo-lang-sierra-generator = { path = "../cairo-lang-sierra-generator", version = "1.0.0-rc0" }
+cairo-lang-sierra-generator = { path = "../cairo-lang-sierra-generator" }

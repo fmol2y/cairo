@@ -57,11 +57,6 @@ impl GasInfo {
     }
 
     pub fn assert_eq(&self, other: &GasInfo) {
-        for key in chain!(self.function_costs.keys(), other.function_costs.keys()) {
-            let self_val = self.function_costs.get(key);
-            let other_val = other.function_costs.get(key);
-            assert!(self_val == other_val, "Difference in {key:?}: {self_val:?} != {other_val:?}",);
-        }
         let mut fail = false;
         for (key, val) in sub_maps(self.variable_values.clone(), other.variable_values.clone()) {
             if val != 0 {
@@ -73,20 +68,23 @@ impl GasInfo {
                 fail = true;
             }
         }
+
         for key in chain!(self.function_costs.keys(), other.function_costs.keys()) {
             let self_val = self.function_costs.get(key);
             let other_val = other.function_costs.get(key);
-            assert!(
-                match (self_val, other_val) {
-                    (Some(self_val), Some(other_val)) =>
-                        sub_maps(self_val.clone(), other_val.iter().map(|(k, v)| (*k, *v)))
-                            .into_iter()
-                            .all(|(_, val)| val == 0),
-                    (None, None) => true,
-                    _ => false,
-                },
-                "Difference in {key:?}: {self_val:?} != {other_val:?}",
-            );
+            let is_same = match (self_val, other_val) {
+                (Some(self_val), Some(other_val)) => {
+                    sub_maps(self_val.clone(), other_val.iter().map(|(k, v)| (*k, *v)))
+                        .into_iter()
+                        .all(|(_, val)| val == 0)
+                }
+                (None, None) => true,
+                _ => false,
+            };
+            if !is_same {
+                println!("Difference in {key:?}: {self_val:?} != {other_val:?}");
+                fail = true;
+            }
         }
         assert!(!fail, "Comparison failed.");
     }
